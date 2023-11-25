@@ -27,6 +27,11 @@ $(function () {
 	let time_str = "00:00";
 	let time_inner = 0;
 	var loadedcss = '';
+	let state_str_curr = '';
+	let state_color_curr = '';
+	let state_str = ['Presentation 20 min.', '5 min. left', 'Discussion 5 min.', 'Closed'];
+	let state_color_default = 'orange';
+	let state_color = ['ForestGreen', 'Gold', 'DodgerBlue', 'Crimson']
 	$('#time0').val('0:00');
 	$('#time1').val('15:00');
 	$('#time2').val('20:00');
@@ -124,6 +129,9 @@ $(function () {
 	function standby() {
 		$('.nav li').removeClass('active');
 		$('.nav li#standby').addClass('active');
+		$('#state').css('color', state_color_default);
+		state_str_curr = '';
+		state_color_curr = '';
 		$('#state').html('STANDBY');
 		changeStateClass('standby');
 		changePhaseClass('0');
@@ -137,8 +145,15 @@ $(function () {
 		}
 		$('.nav li').removeClass('active');
 		$('.nav li#start').addClass('active');
-		$('#state').html('');
+		if(state_str_curr == ''){
+			$('#state').css('color', state_color[0]);
+			$('#state').html(state_str[0]);
+		}else{
+			$('#state').css('color', state_color_curr);
+			$('#state').html(state_str_curr);
+		}
 		changeStateClass('start');
+		
 		start_time = new Date((new Date()).getTime() - time_inner);
 		last_time = null;
 		audio_chime1.load();
@@ -180,6 +195,9 @@ $(function () {
 		$('.nav li').removeClass('active');
 		$('.nav li#pause').addClass('active');
 		update_time();
+		state_str_curr = $('#state').html()
+		state_color_curr = $('#state').css('color');
+		$('#state').css('color', state_color_default);
 		$('#state').html('PAUSED');
 		changeStateClass('paused');
 	}
@@ -208,11 +226,25 @@ $(function () {
 	$(window).bind("resize", resize_display);
 	$(window).bind("orientationchange", resize_display);
 
-	$('#soundcheck').click(function (event) {
+	$('#chime1').click(function (event) {
 		event.preventDefault();
 		audio_chime1.load();
 		audio_chime1.currentTime = 0;
 		audio_chime1.play();
+	});
+	
+	$('#chime2').click(function (event) {
+		event.preventDefault();
+		audio_chime2.load();
+		audio_chime2.currentTime = 0;
+		audio_chime2.play();
+	});
+	
+	$('#chime3').click(function (event) {
+		event.preventDefault();
+		audio_chime3.load();
+		audio_chime3.currentTime = 0;
+		audio_chime3.play();
 	});
 
 	function format_time(t) {
@@ -282,6 +314,8 @@ $(function () {
 
 				if ((last_time < time1 && time1 <= cur_time) || (last_time == time1 && cur_time == time1)) {
 					changePhaseClass('1');
+					$('#state').css('color', state_color[1]);
+					$('#state').html(state_str[1]);
 					audio_chime1.currentTime = 0;
 					audio_chime1.play();
 					console.log('chime1');
@@ -289,6 +323,8 @@ $(function () {
 
 				if ((last_time < time2 && time2 <= cur_time) || (last_time == time2 && cur_time == time2)) {
 					changePhaseClass('2');
+					$('#state').css('color', state_color[2]);
+					$('#state').html(state_str[2]);
 					audio_chime2.currentTime = 0;
 					audio_chime2.play();
 					console.log('chime2');
@@ -296,6 +332,8 @@ $(function () {
 
 				if ((last_time < time3 && time3 <= cur_time) || (last_time == time3 && cur_time == time3)) {
 					changePhaseClass('3');
+					$('#state').css('color', state_color[3]);
+					$('#state').html(state_str[3]);
 					audio_chime3.currentTime = 0;
 					audio_chime3.play();
 					console.log('chime3');
