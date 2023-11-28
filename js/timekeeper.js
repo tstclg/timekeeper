@@ -29,14 +29,16 @@ $(function () {
 	var loadedcss = '';
 	let state_str_curr = '';
 	let state_color_curr = '';
-	let state_str = ['Presentation 20 min.', '5 min. left', 'Discussion 5 min.', 'Closed'];
+	//let state_str = ['Presentation 20 min.', '5 min. left', 'Discussion 5 min.', 'Closed'];
+	let state_str = ['発表時間（20分間）', '2分前', '質疑応答（8分間）', '終了'];
 	let state_color_default = 'orange';
 	let state_color = ['ForestGreen', 'Gold', 'DodgerBlue', 'Crimson']
 	$('#time0').val('0:00');
-	$('#time1').val('15:00');
+	$('#time1').val('18:00');
 	$('#time2').val('20:00');
-	$('#time3').val('25:00');
-	$('#info').html("Click to edit this message.");
+	$('#time3').val('28:00');
+	//$('#info').html("Click to edit this message.");
+	$('#info').html("デジタル駆動化学 第3回WG");
 
 	function getHashParams() {
 		var hashParams = {};
